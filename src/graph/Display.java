@@ -1,7 +1,11 @@
 package graph;
 
+import Input.InputHandler;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -17,6 +21,8 @@ public class Display extends Canvas implements Runnable {
     private BufferedImage img ;
     private Screen screen ;
     private int[] pixel ;
+
+    private InputHandler inputHandler ;
 
     public static void main(String[] args) {
         Display display = new Display();
@@ -34,6 +40,7 @@ public class Display extends Canvas implements Runnable {
     }
     // constructue
     public Display(){
+
     Dimension size = new Dimension(width,height);
     setPreferredSize(size);
     setMinimumSize(size);
@@ -42,7 +49,10 @@ public class Display extends Canvas implements Runnable {
     game = new Game();
     img = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
     pixel = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
+    inputHandler = new InputHandler();
+    addKeyListener(inputHandler);
     }
+
     public void start(){
         if(running)
             return;
@@ -105,7 +115,7 @@ public class Display extends Canvas implements Runnable {
     }
 
     private void tick() {
-        game.tick();
+        game.tick(inputHandler.key);
     }
 
     public void stop(){
