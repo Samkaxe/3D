@@ -10,9 +10,9 @@ public class Render3D extends Render {
     }
 
     public void floor(Game game){
-
-        double floorpostion = 8 ;
-        double ceelingpostion = 8 ;
+                    // old value 8 //Math.sin(game.time / 10) + 10
+        double floorpostion = 30 ;
+        double ceelingpostion = 800 ;
         double forward = game.controls.z ;
         double right = game.controls.x ;
         double rotation = game.controls.rotation;
