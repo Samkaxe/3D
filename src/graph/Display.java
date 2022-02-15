@@ -1,5 +1,6 @@
 package graph;
 
+import Input.Controller;
 import Input.InputHandler;
 
 import javax.swing.*;
@@ -23,12 +24,18 @@ public class Display extends Canvas implements Runnable {
     private int[] pixel ;
 
     private InputHandler inputHandler ;
+    // location tracker
+    private  int newX = 0 ;
+    private int oldX = 0  ;
 
     public static void main(String[] args) {
+        BufferedImage cursor = new BufferedImage(16 ,16 ,BufferedImage.TYPE_INT_ARGB);
+        Cursor blank = Toolkit.getDefaultToolkit().createCustomCursor(cursor ,new Point(0,0),"blank");
         Display display = new Display();
         JFrame frame = new JFrame();
         frame.add(display);
         frame.pack();
+        frame.getContentPane().setCursor(blank);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle(title);
         frame.setLocationRelativeTo(null);
@@ -50,7 +57,11 @@ public class Display extends Canvas implements Runnable {
     img = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
     pixel = ((DataBufferInt)img.getRaster().getDataBuffer()).getData();
     inputHandler = new InputHandler();
+
     addKeyListener(inputHandler);
+    addFocusListener(inputHandler);
+    addMouseListener(inputHandler);
+    addMouseMotionListener(inputHandler);
     }
 
     public void start(){
@@ -80,7 +91,7 @@ public class Display extends Canvas implements Runnable {
              ticked = true ;
              tickcount++ ;
              if(tickcount % 60 ==0){
-                 System.out.println(fps + "frame per secunds");
+                 System.out.println(fps);
                  privouestime += 1000 ;
                  fps = 0 ;
              }
@@ -91,6 +102,22 @@ public class Display extends Canvas implements Runnable {
          }
          render();
          fps++ ;
+         // tracking thr oldx and replace it by the newX
+         newX = InputHandler.mouseX;
+         if(newX > oldX){
+             Controller.turnright =true ;
+         }
+
+        if(newX < oldX){
+            Controller.turnleft = true ;
+        }
+        if(newX == oldX){
+            Controller.turnleft = false ;
+            Controller.turnright = false ;
+        }
+        oldX = newX ;
+          //  System.out.println("X "+ InputHandler.mouseX);
+            //System.out.println("Y "+InputHandler.mouseY);
         }
     }
 
