@@ -27,6 +27,7 @@ public class Display extends Canvas implements Runnable {
     // location tracker
     private  int newX = 0 ;
     private int oldX = 0  ;
+    private int frames ;
 
     public static void main(String[] args) {
         BufferedImage cursor = new BufferedImage(16 ,16 ,BufferedImage.TYPE_INT_ARGB);
@@ -92,6 +93,7 @@ public class Display extends Canvas implements Runnable {
              tickcount++ ;
              if(tickcount % 60 ==0){
                  System.out.println(fps);
+                frames = fps ;
                  privouestime += 1000 ;
                  fps = 0 ;
              }
@@ -100,6 +102,7 @@ public class Display extends Canvas implements Runnable {
              render();
              fps++ ;
          }
+
          render();
          fps++ ;
          // tracking thr oldx and replace it by the newX
@@ -137,6 +140,9 @@ public class Display extends Canvas implements Runnable {
 
         Graphics g = bs.getDrawGraphics();
         g.drawImage(img ,0 ,0 ,width ,height,null);
+        g.setFont(new Font("Verdana",2,30));
+        g.setColor(Color.yellow);
+        g.drawString(frames+ "FPS",680,580);
         g.dispose();
         bs.show();
     }
