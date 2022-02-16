@@ -86,6 +86,7 @@ public class Display extends Canvas implements Runnable {
          long passedtime = currnttime - privouestime ;
          privouestime = currnttime ;
          unprocessedsecunds += passedtime/ 1000_000_000.0 ;
+         requestFocus();
          while (unprocessedsecunds > secondspertick){
              tick();
              unprocessedsecunds -= secondspertick ;

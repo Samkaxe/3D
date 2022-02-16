@@ -1,9 +1,14 @@
 package graph;
 
+import Input.Controller;
+
+import java.util.Random;
+
 public class Render3D extends Render {
 
     public double[] zBuffer ;
-    private double renderDictance = 5000 ;
+    private double renderDictance = 6000 ;
+
     public Render3D(int width, int height) {
         super(width, height);
         zBuffer = new double[width * height];
@@ -11,21 +16,35 @@ public class Render3D extends Render {
 
     public void floor(Game game){
                     // old value 8 //Math.sin(game.time / 10) + 10
-        double floorpostion = 30 ;
-        double ceelingpostion = 800 ;
+        double floorpostion =  10 ;
+        double ceelingpostion = 20 ;
         double forward = game.controls.z ;
         double right = game.controls.x ;
-        double rotation = game.controls.rotation;
+        double up = game.controls.y ;
+        double walking = Math.sin(game.time / 6.0) * 0.5 ;
+        if(Controller.crouchwalk){
+            walking = Math.sin(game.time / 6.0) * 0.25 ;
+        }
+        if(Controller.runwalk){
+            walking = Math.sin(game.time / 6.0) * 0.8 ;
+        }
+        double rotation =0 ; // game.controls.rotation;
         double cosine  = Math.cos(rotation);
         double sine = Math.sin(rotation);
+
 
        for( int y = 0 ; y < height ; y++ ){
            double celling = (y + -height / 2.0) / height ;
 
-            double  z = floorpostion  / celling ;
-
+            double  z = (floorpostion + up )  / celling ;
+            if(Controller.walk == true){
+                  z = (floorpostion + up + walking )  / celling ;
+            }
                 if(celling < 0 ){
-                 z = ceelingpostion / -celling ;
+                 z = (ceelingpostion - up  ) / -celling ;
+                 if(Controller.walk){
+                     z = (ceelingpostion - up - walking  ) / -celling ;
+                 }
                 }
 
            for(int x = 0 ; x < width ; x++){
@@ -44,7 +63,23 @@ public class Render3D extends Render {
            }
 
        }
+
+       // redner a wall
+        Random random = new Random(100);
+        for(int i = 0 ; i < 10000 ; i++  ){
+            double xx = random.nextDouble();
+            double yy = random.nextDouble();
+            double zz = 10 ;
+
+            int xPixel = (int) (xx/ zz * height / 2  + width /2 );
+            int yPixel = (int) (yy / zz * height  /2  + height /2 );
+
+            if( xPixel >= 0 && yPixel >= 0  && xPixel < width && yPixel < height )
+                pixel[xPixel + yPixel * width] = 0xfffff ;
+        }
+
     }
+
 
     public void renderDictanceLimiter(){
         for(int i = 0 ; i < width * height ; i++){
