@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Texture {
     // load th image and return the image
 
-    public static  Render floor = loadBitmap("/res/Untitled.png");
+    public static  Render floor = loadBitmap("out/production/3D demo/res/Untitled.png");
 
     private static Render loadBitmap(String filename) {
         try{
