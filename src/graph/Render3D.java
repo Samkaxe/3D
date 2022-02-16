@@ -8,6 +8,7 @@ public class Render3D extends Render {
 
     public double[] zBuffer ;
     private double renderDictance = 6000 ;
+    private double forwardGlobal ;
 
     public Render3D(int width, int height) {
         super(width, height);
@@ -18,7 +19,8 @@ public class Render3D extends Render {
                     // old value 8 //Math.sin(game.time / 10) + 10
         double floorpostion =  10 ;
         double ceelingpostion = 20 ;
-        double forward = game.controls.z ;
+        double forward = game.controls.x ;  //game.controls.z ;
+        forwardGlobal = forward ;
         double right = game.controls.x ;
         double up = game.controls.y ;
         double walking = Math.sin(game.time / 6.0) * 0.5 ;
@@ -28,7 +30,7 @@ public class Render3D extends Render {
         if(Controller.runwalk){
             walking = Math.sin(game.time / 6.0) * 0.8 ;
         }
-        double rotation =0 ; // game.controls.rotation;
+        double rotation =  game.controls.rotation;
         double cosine  = Math.cos(rotation);
         double sine = Math.sin(rotation);
 
@@ -64,12 +66,14 @@ public class Render3D extends Render {
 
        }
 
-       // redner a wall
+    }
+    // render 3D render the wall in screen class
+    public void walls(){
         Random random = new Random(100);
-        for(int i = 0 ; i < 10000 ; i++  ){
-            double xx = random.nextDouble();
+        for(int i = 0 ; i < 20000 ; i++  ){
+            double xx = random.nextDouble() -1;
             double yy = random.nextDouble();
-            double zz = 10 ;
+            double zz = 2 - forwardGlobal / 16 ;
 
             int xPixel = (int) (xx/ zz * height / 2  + width /2 );
             int yPixel = (int) (yy / zz * height  /2  + height /2 );
@@ -77,7 +81,39 @@ public class Render3D extends Render {
             if( xPixel >= 0 && yPixel >= 0  && xPixel < width && yPixel < height )
                 pixel[xPixel + yPixel * width] = 0xfffff ;
         }
+        for(int i = 0 ; i < 20000 ; i++  ){
+            double xx = random.nextDouble() -1 ;
+            double yy = random.nextDouble() -1;
+            double zz = 2 -forwardGlobal / 16 ;
 
+            int xPixel = (int) (xx/ zz * height / 2  + width /2 );
+            int yPixel = (int) (yy / zz * height  /2  + height /2 );
+
+            if( xPixel >= 0 && yPixel >= 0  && xPixel < width && yPixel < height )
+                pixel[xPixel + yPixel * width] = 0xfffff ;
+        }
+        for(int i = 0 ; i < 20000 ; i++  ){
+            double xx = random.nextDouble();
+            double yy = random.nextDouble()-1;
+            double zz = 2 -forwardGlobal / 16 ;
+
+            int xPixel = (int) (xx/ zz * height / 2  + width /2 );
+            int yPixel = (int) (yy / zz * height  /2  + height /2 );
+
+            if( xPixel >= 0 && yPixel >= 0  && xPixel < width && yPixel < height )
+                pixel[xPixel + yPixel * width] = 0xfffff ;
+        }
+        for(int i = 0 ; i < 20000 ; i++  ){
+            double xx = random.nextDouble();
+            double yy = random.nextDouble();
+            double zz = 2 -forwardGlobal / 16 ;
+
+            int xPixel = (int) (xx/ zz * height / 2  + width /2 );
+            int yPixel = (int) (yy / zz * height  /2  + height /2 );
+
+            if( xPixel >= 0 && yPixel >= 0  && xPixel < width && yPixel < height )
+                pixel[xPixel + yPixel * width] = 0xfffff ;
+        }
     }
 
 

@@ -1,14 +1,14 @@
 package graph;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Texture {
     // load th image and return the image
 
-    public static  Render floor = loadBitmap("out/production/3D demo/res/Untitled.png");
-
+    public static  Render floor = loadBitmap("/Texture/Untitled.png");
     private static Render loadBitmap(String filename) {
         try{
             BufferedImage image = ImageIO.read(Texture.class.getResource(filename));
@@ -20,7 +20,7 @@ public class Texture {
             return result ;
 
         }catch (IOException e) {
-            System.out.println("crash");
+            System.out.println("dddddddddddddddddddddddddddddd");
             throw new RuntimeException();
         }
     }

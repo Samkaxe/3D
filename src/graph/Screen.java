@@ -29,7 +29,9 @@ public class Screen extends Render {
            // draw(test, (width - 256) / 2 + anim, (height - 256) / 2 + animy);
         }
         render3D.floor(game);
+
         render3D.renderDictanceLimiter();
+       // render3D.walls();
         draw(render3D ,0 , 0);
     }
 }
