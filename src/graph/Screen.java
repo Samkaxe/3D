@@ -33,8 +33,12 @@ public class Screen extends Render {
          */
 
         render3D.floor(game);
-        render3D.renderWalls(0 , 0.5 ,1 ,0);
+        render3D.renderWalls(0 , 0.5 ,1.5 , 1.5,0);
+        render3D.renderWalls(0 , 0 ,1 , 1.5,0);
+        render3D.renderWalls(0 , 0.5 ,1 , 1,0);
+        render3D.renderWalls(0.5 , 0.5 ,1 , 1.5,0);
         render3D.renderDictanceLimiter();
+
        // render3D.walls();
         draw(render3D ,0 , 0);
     }

@@ -29,21 +29,19 @@ public class Render3D extends Render {
         sine = Math.sin(rotation);
         // walking = Math.sin(game.time / 6.0) * 0.5 ;
 
-        if(Controller.crouchwalk){
-            walking = Math.sin(game.time / 6.0) * 0.25 ;
-        }
-        if(Controller.runwalk){
-            walking = Math.sin(game.time / 6.0) * 0.8 ;
-        }
-
-
        for( int y = 0 ; y < height ; y++ ){
            double celling = (y + -height / 2.0) / height ;
 
             double  z = (floorpostion + up )  / celling ;
-            if(Controller.walk == true){
-                  z = (floorpostion + up + walking )  / celling ;
+            if(Controller.walk){
+            z = (floorpostion + up + walking )  / celling ;
             }
+           if(Controller.crouchwalk){
+            walking = Math.sin(game.time / 6.0) * 0.25 ;
+           }
+           if(Controller.runwalk){
+            walking = Math.sin(game.time / 6.0) * 0.8 ;
+           }
                 if(celling < 0 ){
                  z = (ceelingpostion - up  ) / -celling ;
                  if(Controller.walk){
@@ -121,23 +119,27 @@ public class Render3D extends Render {
     }
 
      */
-    public void renderWalls(double xLeft , double xRight , double zDistance ,double yHeight) {
+    public void renderWalls(double xLeft , double xRight ,double zDistancelLeft,double zDistanceRight ,double yHeight) {
      // x left , right repesnet the wall postion  , y the hight of the wall , and z is the depth
-    double xcLeft = ((xLeft) - right) * 2;
-    double zcLeft = ((zDistance) - forward) * 2 ;
+   double upcorrecect = 0.062 ;
+    double rightCorrect = 0.062 ;
+    double forwardCorrect  =  0.062 ;
+
+    double xcLeft = ((xLeft) - (right * rightCorrect)) * 2;
+    double zcLeft = ((zDistancelLeft) - (forward * forwardCorrect)) * 2 ;
 
     double rotLeftSideX = xcLeft * cosine - zcLeft * sine ; // checked
-    double yCornerTL = ((-yHeight)- up)* 2 ;
-    double yCornerBl = ((+0.5 - yHeight)- up) * 2 ; // checked
+    double yCornerTL = ((-yHeight) - (-up * upcorrecect))* 2 ;
+    double yCornerBl = ((+0.5 - yHeight)-(-up * upcorrecect)) * 2 ; // checked
     double rotLeftSideZ = zcLeft * cosine + xcLeft * sine ;
 
-    double xcRight = ((xRight) - right) * 2 ;
-    double zcRight = ((zDistance) - forward) * 2 ;
+    double xcRight = ((xRight) - (right * rightCorrect)) * 2 ;
+    double zcRight = ((zDistanceRight) - (forward * forwardCorrect)) * 2 ;
 
     double rotRightSideX = xcRight * cosine - zcRight * sine;
 
-    double yCornerTR = ((-yHeight) - up) * 2 ;
-    double yCornerBR = ((+0.5 - yHeight) - up) * 2 ;
+    double yCornerTR = ((-yHeight) - (-up * upcorrecect)) * 2 ;
+    double yCornerBR = ((+0.5 - yHeight) - (-up * upcorrecect)) * 2 ;
     double rotRightSidez = zcRight *  cosine + xcRight * sine ;
 
     double xPixelLeft =(rotLeftSideX / rotLeftSideZ * height + width / 2 );
@@ -196,7 +198,8 @@ public class Render3D extends Render {
                     double pixelRotationY = (y - yPixelTop)/ (yPixelBottum - yPixelTop);
                     int yTexture = (int) (8 * pixelRotationY);
                 pixel[x + y * width] = xTexture * 100 + yTexture * 100 * 256 ;
-            zBuffer[x + y * width] = 1 / (tex1 + (tex2 - tex1) * pixelRotation) * 8;
+            zBuffer[x + y * width] = 1 / (tex1 + (tex2 - tex1) * pixelRotation) * 5; // control the distance limiter brightness
+
         }
     }
 
